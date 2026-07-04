@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Наш каталог</title>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:linear-gradient(160deg,#0d1117 0%,#131a2b 45%,#0f1420 100%);min-height:100vh;color:#e8ecf4;padding:22px 16px calc(30px + env(safe-area-inset-bottom,0px))}
+header.hero{max-width:1080px;margin:0 auto 20px;text-align:center;padding:22px 14px}
+header.hero h1{font-size:clamp(1.4rem,4.5vw,2.1rem);font-weight:800;letter-spacing:.02em;background:linear-gradient(90deg,#e8ecf4,#a5b4fc,#e8ecf4);-webkit-background-clip:text;background-clip:text;color:transparent}
+header.hero p{margin-top:6px;color:#9aa4b8;font-size:.95rem}
+.chips{display:none;max-width:1080px;margin:0 auto 18px;gap:8px;flex-wrap:wrap;justify-content:center}
+.js .chips{display:flex}
+.chip{padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#cdd5e1;font-size:.85rem;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);transition:background .2s,border-color .2s,transform .15s}
+.chip:active{transform:scale(.95)}
+.chip.active{background:rgba(165,180,252,.22);border-color:rgba(165,180,252,.55);color:#fff}
+.grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(164px,1fr));gap:14px}
+@media(min-width:640px){.grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}}
+.card{border-radius:18px;overflow:hidden;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);border-top-color:rgba(255,255,255,.22);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.js .card{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .55s cubic-bezier(.22,1,.36,1)}
+.card.show{opacity:1;transform:none}
+.card.hide{display:none}
+.ph{display:block;width:100%;aspect-ratio:4/3;border:0;padding:0;background:rgba(255,255,255,.04);cursor:zoom-in}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.ph:hover img{transform:scale(1.05)}
+.ph-empty{display:flex;align-items:center;justify-content:center;cursor:default}
+.ph-empty span{font-size:1.9rem;font-weight:800;color:rgba(255,255,255,.16);letter-spacing:.06em}
+.body{padding:12px 13px 14px}
+.body h3{font-size:.97rem;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+.desc{margin-top:4px;font-size:.8rem;color:#9aa4b8;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{margin-top:10px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.price{font-size:1rem;font-weight:800;color:#a5f3c4;font-variant-numeric:tabular-nums}
+.badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;letter-spacing:.03em}
+.badge.in{background:rgba(52,211,153,.16);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
+.badge.out{background:rgba(239,68,68,.14);color:#fca5a5;border:1px solid rgba(239,68,68,.32)}
+.badge.qty{background:rgba(165,180,252,.14);color:#c7d2fe;border:1px solid rgba(165,180,252,.3)}
+.lb{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(5,8,14,.9);backdrop-filter:blur(10px);cursor:zoom-out;padding:20px}
+.lb.open{display:flex;animation:lbin .22s ease}
+.lb img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+@keyframes lbin{from{opacity:0}to{opacity:1}}
+footer{max-width:1080px;margin:28px auto 0;text-align:center;color:#5b6474;font-size:.75rem}
+@media(prefers-reduced-motion:reduce){.card{transition:none;opacity:1;transform:none}.ph img{transition:none}}
+.contacts{max-width:1080px;margin:0 auto 20px;text-align:center}
+.contacts-title{display:block;margin-bottom:9px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#7d8798}
+.contacts-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.contact{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.055);color:#dbe3ee;font-size:.84rem;font-weight:650;text-decoration:none;backdrop-filter:blur(10px);transition:background .2s,border-color .2s,transform .15s}
+.contact:active{transform:scale(.96)}
+.contact-telegram:hover{border-color:rgba(94,168,255,.6);background:rgba(94,168,255,.14)}
+.contact-whatsapp:hover{border-color:rgba(37,211,102,.55);background:rgba(37,211,102,.13)}
+.contact-facebook:hover{border-color:rgba(96,128,255,.55);background:rgba(96,128,255,.13)}
+.contact-phone:hover,.contact-email:hover{border-color:rgba(165,180,252,.55);background:rgba(165,180,252,.13)}
+.buy{margin-top:10px;display:flex;align-items:center;gap:8px}
+.add{flex:1;padding:9px 10px;border-radius:11px;border:1px solid rgba(165,180,252,.4);background:rgba(165,180,252,.16);color:#dbe3ff;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .2s,transform .12s}
+.add:active{transform:scale(.96)}
+.buy.on .add{display:none}
+.step{display:none;flex:1;align-items:center;justify-content:space-between;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:4px}
+.buy.on .step{display:flex}
+.step button{width:34px;height:32px;border:0;border-radius:8px;background:rgba(255,255,255,.09);color:#e8ecf4;font-size:1.05rem;font-weight:700;cursor:pointer}
+.step b{font-variant-numeric:tabular-nums}
+.cartbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;border:1px solid rgba(165,180,252,.45);background:rgba(23,29,47,.9);backdrop-filter:blur(16px);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 14px 44px rgba(0,0,0,.5);animation:cbin .3s cubic-bezier(.22,1,.36,1)}
+@keyframes cbin{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.cb-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:#a5b4fc;color:#101425;font-size:.8rem;font-weight:800}
+.cartbar b{color:#a5f3c4;font-variant-numeric:tabular-nums}
+.sheet{position:fixed;inset:0;z-index:60}
+.sh-scrim{position:absolute;inset:0;background:rgba(5,8,14,.72);backdrop-filter:blur(6px)}
+.sh-panel{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(560px,100%);max-height:92dvh;overflow-y:auto;background:linear-gradient(170deg,#161d30,#101524);border:1px solid rgba(255,255,255,.14);border-bottom:0;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:shin .32s cubic-bezier(.22,1,.36,1)}
+@media(min-width:640px){.sh-panel{bottom:auto;top:50%;transform:translate(-50%,-50%);border-radius:22px;border-bottom:1px solid rgba(255,255,255,.14)}}
+@keyframes shin{from{opacity:0;transform:translateX(-50%) translateY(40px)}to{opacity:1}}
+.sh-panel h2{font-size:1.15rem;margin-bottom:12px}
+.sh-items{display:flex;flex-direction:column;gap:8px}
+.sh-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.sh-item .nm{flex:1;min-width:0;font-size:.88rem;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-item .pr{font-size:.85rem;color:#a5f3c4;font-variant-numeric:tabular-nums}
+.sh-item button{width:28px;height:28px;border:0;border-radius:8px;background:rgba(255,255,255,.09);color:#e8ecf4;font-weight:700;cursor:pointer}
+.sh-item .q{min-width:20px;text-align:center;font-variant-numeric:tabular-nums}
+.sh-total{display:flex;justify-content:space-between;align-items:baseline;margin:14px 2px 6px;font-size:1rem}
+.sh-total b{font-size:1.25rem;color:#a5f3c4;font-variant-numeric:tabular-nums}
+.sh-pay{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.sh-pay>span{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9aa4b8}
+.sh-pay label{cursor:pointer}
+.sh-pay input{position:absolute;opacity:0;pointer-events:none}
+.sh-pay i{display:inline-block;font-style:normal;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);font-size:.83rem;font-weight:600;transition:background .2s,border-color .2s}
+.sh-pay input:checked+i{background:rgba(245,181,68,.2);border-color:rgba(245,181,68,.6);color:#ffe1a6}
+.sh-form{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sh-form input,.sh-form textarea{grid-column:span 1;padding:11px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#e8ecf4;font:inherit;font-size:.9rem}
+.sh-form input::placeholder,.sh-form textarea::placeholder{color:#7d8798}
+.sh-form input[name=address],.sh-form textarea,.sh-form .sh-send{grid-column:1/-1}
+.sh-send{padding:14px;border:0;border-radius:13px;background:linear-gradient(120deg,#8b9cf9,#a5b4fc);color:#0f1320;font-size:1rem;font-weight:800;cursor:pointer;transition:filter .15s,transform .12s}
+.sh-send:active{transform:scale(.985)}
+.sh-send:disabled{opacity:.6;cursor:default}
+.sh-done,.sh-fail{text-align:center;padding:18px 6px 6px}
+.sh-check{width:56px;height:56px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:rgba(52,211,153,.18);color:#6ee7b7;border:1px solid rgba(52,211,153,.4)}
+.sh-done h3,.sh-fail h3{margin-bottom:6px}
+.sh-done p,.sh-fail p{color:#9aa4b8;font-size:.88rem;line-height:1.5}
+.sh-fail-row{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.sh-retry,.sh-close2{padding:10px 18px;border-radius:11px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#e8ecf4;font:inherit;font-weight:700;cursor:pointer}
+.sh-wa{display:inline-flex;align-items:center;padding:10px 18px;border-radius:11px;background:rgba(37,211,102,.18);border:1px solid rgba(37,211,102,.45);color:#7bf1a8;font-weight:700;text-decoration:none}
+.sh-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#e8ecf4;cursor:pointer}
+</style>
+</head>
+<body>
+<header class="hero"><h1>Наш каталог</h1><p>Тестовая витрина</p></header>
+<section class="contacts" aria-label="Связаться с нами">
+<span class="contacts-title">Связаться с нами</span>
+<div class="contacts-row"><a class="contact contact-telegram" href="https://t.me/Schreiry" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.04 15.5 8.9 19c.4 0 .58-.17.8-.38l1.92-1.84 3.98 2.91c.73.4 1.25.19 1.45-.67l2.62-12.28c.26-1.06-.38-1.48-1.09-1.22L3.8 11.44c-1.05.4-1.03.98-.18 1.24l3.94 1.23 9.14-5.76c.43-.26.82-.12.5.17l-8.16 7.18z"/></svg><span>@Schreiry</span></a><a class="contact contact-whatsapp" href="https://wa.me/+995592957272" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.23.65-1.35 1.24-1.87 1.28-.5.05-.97.24-3.27-.68-2.76-1.09-4.53-3.9-4.67-4.08-.13-.18-1.12-1.49-1.12-2.85 0-1.35.71-2.02.96-2.3.25-.27.55-.34.73-.34l.53.01c.17.01.4-.06.62.48.23.55.78 1.9.85 2.04.07.14.11.3.02.48-.09.18-.13.3-.27.46l-.41.48c-.13.13-.27.28-.12.55.16.27.7 1.16 1.5 1.87 1.03.92 1.9 1.2 2.17 1.34.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.6-.14.25.09 1.6.75 1.87.89.27.14.45.2.52.32.06.11.06.66-.16 1.32z"/></svg><span>WhatsApp</span></a><a class="contact contact-phone" href="tel:+995592957272" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+995 592 95 72 72</span></a><a class="contact contact-phone" href="tel:+995555439334" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+995 555 43 93 34</span></a><a class="contact contact-facebook" href="https://www.facebook.com/profile.php?id=61573325830452" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg><span>Facebook</span></a></div>
+</section>
+<nav class="chips" aria-label="filter"><button class="chip active" data-cat="">Все</button><button class="chip" data-cat="Цветы">Цветы</button><button class="chip" data-cat="Корзины">Корзины</button></nav>
+<main class="grid">
+<article class="card" data-cat="Цветы"><div class="ph ph-empty" aria-hidden="true"><span>ГО</span></div><div class="body"><h3>Горшок-1-2</h3><div class="meta"><span class="price">22,00 GEL</span><span class="badge in">В наличии</span></div><div class="buy" data-id="p1" data-name="Горшок-1-2" data-price="22">
+<button class="add" type="button">В корзину</button>
+<span class="step"><button class="dec" type="button" aria-label="−">−</button><b class="n">0</b><button class="inc" type="button" aria-label="+">+</button></span>
+</div></div></article>
+<article class="card" data-cat="Цветы"><div class="ph ph-empty" aria-hidden="true"><span>СУ</span></div><div class="body"><h3>Сумка(Remastered)</h3><div class="meta"><span class="price">35,00 GEL</span><span class="badge in">В наличии</span></div><div class="buy" data-id="p2" data-name="Сумка(Remastered)" data-price="35">
+<button class="add" type="button">В корзину</button>
+<span class="step"><button class="dec" type="button" aria-label="−">−</button><b class="n">0</b><button class="inc" type="button" aria-label="+">+</button></span>
+</div></div></article>
+<article class="card" data-cat="Корзины"><div class="ph ph-empty" aria-hidden="true"><span>КО</span></div><div class="body"><h3>корзина-2</h3><div class="meta"><span class="price">12,50 GEL</span><span class="badge out">Нет в наличии</span></div><div class="buy" data-id="p3" data-name="корзина-2" data-price="12.5">
+<button class="add" type="button">В корзину</button>
+<span class="step"><button class="dec" type="button" aria-label="−">−</button><b class="n">0</b><button class="inc" type="button" aria-label="+">+</button></span>
+</div></div></article>
+<article class="card"><div class="ph ph-empty" aria-hidden="true"><span>БЕ</span></div><div class="body"><h3>Без цены (не заказывается)</h3><div class="meta"></div></div></article>
+</main>
+<section class="contacts contacts-bottom" aria-label="Связаться с нами">
+<span class="contacts-title">Связаться с нами</span>
+<div class="contacts-row"><a class="contact contact-telegram" href="https://t.me/Schreiry" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.04 15.5 8.9 19c.4 0 .58-.17.8-.38l1.92-1.84 3.98 2.91c.73.4 1.25.19 1.45-.67l2.62-12.28c.26-1.06-.38-1.48-1.09-1.22L3.8 11.44c-1.05.4-1.03.98-.18 1.24l3.94 1.23 9.14-5.76c.43-.26.82-.12.5.17l-8.16 7.18z"/></svg><span>@Schreiry</span></a><a class="contact contact-whatsapp" href="https://wa.me/+995592957272" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.23.65-1.35 1.24-1.87 1.28-.5.05-.97.24-3.27-.68-2.76-1.09-4.53-3.9-4.67-4.08-.13-.18-1.12-1.49-1.12-2.85 0-1.35.71-2.02.96-2.3.25-.27.55-.34.73-.34l.53.01c.17.01.4-.06.62.48.23.55.78 1.9.85 2.04.07.14.11.3.02.48-.09.18-.13.3-.27.46l-.41.48c-.13.13-.27.28-.12.55.16.27.7 1.16 1.5 1.87 1.03.92 1.9 1.2 2.17 1.34.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.6-.14.25.09 1.6.75 1.87.89.27.14.45.2.52.32.06.11.06.66-.16 1.32z"/></svg><span>WhatsApp</span></a><a class="contact contact-phone" href="tel:+995592957272" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+995 592 95 72 72</span></a><a class="contact contact-phone" href="tel:+995555439334" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+995 555 43 93 34</span></a><a class="contact contact-facebook" href="https://www.facebook.com/profile.php?id=61573325830452" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg><span>Facebook</span></a></div>
+</section>
+<footer>Наш каталог · 04.07.2026</footer>
+<div class="lb" id="lb"><img id="lbimg" alt=""></div>
+<button class="cartbar" id="cartbar" type="button" hidden>
+<span class="cb-count" id="cbcount">0</span><span id="cblabel">Корзина</span><b id="cbtotal"></b>
+</button>
+<div class="sheet" id="sheet" hidden>
+<div class="sh-scrim" id="shscrim"></div>
+<div class="sh-panel" role="dialog" aria-modal="true" aria-label="Ваш заказ">
+<h2>Ваш заказ</h2>
+<div class="sh-items" id="shitems"></div>
+<div class="sh-total"><span>Итого</span><b id="shtotal"></b></div>
+<div class="sh-pay" role="group" aria-label="Оплата">
+<span>Оплата</span>
+<label><input type="radio" name="pay" value="standard" checked><i>При получении</i></label>
+<label><input type="radio" name="pay" value="consignment"><i>Под реализацию</i></label>
+</div>
+<form class="sh-form" id="shform">
+<input name="name" required maxlength="120" placeholder="Имя*" autocomplete="name">
+<input name="phone" required maxlength="40" placeholder="Телефон*" autocomplete="tel" inputmode="tel">
+<input name="city" maxlength="60" placeholder="Город" autocomplete="address-level2">
+<input name="address" maxlength="200" placeholder="Адрес доставки" autocomplete="street-address">
+<input name="company" maxlength="120" placeholder="Магазин / компания" autocomplete="organization">
+<input name="email" type="email" maxlength="120" placeholder="Email" autocomplete="email">
+<textarea name="note" rows="2" maxlength="500" placeholder="Комментарий"></textarea>
+<button class="sh-send" id="shsend" type="submit">Заказать</button>
+</form>
+<div class="sh-done" id="shdone" hidden>
+<div class="sh-check">✓</div><h3>Спасибо! Заказ принят</h3><p>Мы свяжемся с вами для подтверждения.</p>
+<button class="sh-close2" id="shclosedone" type="button">Закрыть</button>
+</div>
+<div class="sh-fail" id="shfail" hidden>
+<h3>Не получилось отправить</h3><p>Попробуйте ещё раз или напишите нам в WhatsApp — текст заказа уже готов.</p>
+<div class="sh-fail-row">
+<button class="sh-retry" id="shretry" type="button">Попробовать снова</button>
+<a class="sh-wa" id="shwa" href="#" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+</div>
+</div>
+<button class="sh-close" id="shclose" type="button" aria-label="Закрыть">✕</button>
+</div>
+</div>
+<script>
+(function(){
+var cards=[].slice.call(document.querySelectorAll('.card'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}});},{threshold:.08});
+cards.forEach(function(c,i){c.style.transitionDelay=Math.min(i*40,320)+'ms';io.observe(c);});
+}else{cards.forEach(function(c){c.classList.add('show');});}
+var lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg');
+document.querySelectorAll('.ph img').forEach(function(img){
+img.parentElement.addEventListener('click',function(){lbimg.src=img.src;lb.classList.add('open');});
+});
+lb.addEventListener('click',function(){lb.classList.remove('open');lbimg.src='';});
+document.querySelectorAll('.chip').forEach(function(ch){
+ch.addEventListener('click',function(){
+document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');});
+ch.classList.add('active');
+var cat=ch.getAttribute('data-cat');
+cards.forEach(function(c){
+var match=!cat||c.getAttribute('data-cat')===cat;
+c.classList.toggle('hide',!match);
+if(match)c.classList.add('show');
+});
+});
+});
+// ── Cart (site mode) ──
+var CUR="GEL";
+var ENDPOINT="https://script.google.com/macros/s/FAKE-FOR-TEST/exec";
+var WAFALL="https://wa.me/+995592957272";
+var ORDERMSG="Здравствуйте! Хочу заказать:";
+var TOTALL="Итого";
+var SENDL="Заказать";
+var SENDINGL="Отправляем…";
+var cart={};
+try{cart=JSON.parse(localStorage.getItem('exsul.cart.v1')||'{}')||{};}catch(e){cart={};}
+var meta={};
+[].forEach.call(document.querySelectorAll('.buy'),function(b){
+meta[b.getAttribute('data-id')]={name:b.getAttribute('data-name'),price:parseFloat(b.getAttribute('data-price'))||0};
+});
+Object.keys(cart).forEach(function(id){if(!meta[id])delete cart[id];});
+function fmt(v){return (Math.round(v*100)/100).toLocaleString().replace(/\u00a0/g,' ')+' '+CUR;}
+function save(){try{localStorage.setItem('exsul.cart.v1',JSON.stringify(cart));}catch(e){}}
+function count(){var n=0;Object.keys(cart).forEach(function(k){n+=cart[k];});return n;}
+function total(){var s=0;Object.keys(cart).forEach(function(k){s+=cart[k]*(meta[k]?meta[k].price:0);});return s;}
+function syncButtons(){
+[].forEach.call(document.querySelectorAll('.buy'),function(b){
+var id=b.getAttribute('data-id'),q=cart[id]||0;
+b.classList.toggle('on',q>0);
+b.querySelector('.n').textContent=q;
+});
+var bar=document.getElementById('cartbar');
+var n=count();
+bar.hidden=n===0;
+document.getElementById('cbcount').textContent=n;
+document.getElementById('cbtotal').textContent=fmt(total());
+}
+function setQty(id,q){
+q=Math.max(0,Math.min(999,q));
+if(q===0)delete cart[id];else cart[id]=q;
+save();syncButtons();renderSheet();
+}
+[].forEach.call(document.querySelectorAll('.buy'),function(b){
+var id=b.getAttribute('data-id');
+b.querySelector('.add').addEventListener('click',function(e){e.stopPropagation();setQty(id,1);});
+b.querySelector('.inc').addEventListener('click',function(e){e.stopPropagation();setQty(id,(cart[id]||0)+1);});
+b.querySelector('.dec').addEventListener('click',function(e){e.stopPropagation();setQty(id,(cart[id]||0)-1);});
+});
+var sheet=document.getElementById('sheet');
+function renderSheet(){
+var box=document.getElementById('shitems');
+var ids=Object.keys(cart);
+box.innerHTML=ids.length?'':'<p style="color:#7d8798;text-align:center;padding:10px 0">'+"Корзина пуста"+'</p>';
+ids.forEach(function(id){
+var m=meta[id],q=cart[id];
+var row=document.createElement('div');row.className='sh-item';
+row.innerHTML='<span class="nm"></span><button type="button" class="d">−</button><span class="q"></span><button type="button" class="i">+</button><span class="pr"></span>';
+row.querySelector('.nm').textContent=m.name;
+row.querySelector('.q').textContent=q;
+row.querySelector('.pr').textContent=fmt(q*m.price);
+row.querySelector('.d').addEventListener('click',function(){setQty(id,q-1);});
+row.querySelector('.i').addEventListener('click',function(){setQty(id,q+1);});
+box.appendChild(row);
+});
+document.getElementById('shtotal').textContent=fmt(total());
+}
+function openSheet(){renderSheet();
+document.getElementById('shdone').hidden=true;
+document.getElementById('shfail').hidden=true;
+document.getElementById('shform').hidden=false;
+sheet.hidden=false;document.body.style.overflow='hidden';}
+function closeSheet(){sheet.hidden=true;document.body.style.overflow='';}
+document.getElementById('cartbar').addEventListener('click',openSheet);
+document.getElementById('shclose').addEventListener('click',closeSheet);
+document.getElementById('shscrim').addEventListener('click',closeSheet);
+document.getElementById('shclosedone').addEventListener('click',closeSheet);
+function orderPayload(fd){
+var items=Object.keys(cart).map(function(id){return{id:id,name:meta[id].name,qty:cart[id],price:meta[id].price};});
+var pay=document.querySelector('input[name=pay]:checked');
+return{name:fd.get('name'),phone:fd.get('phone'),city:fd.get('city'),address:fd.get('address'),
+company:fd.get('company'),email:fd.get('email'),note:fd.get('note'),
+payMode:pay?pay.value:'standard',items:items,total:total(),currency:CUR,at:new Date().toISOString()};
+}
+function orderText(p){
+var lines=[ORDERMSG];
+p.items.forEach(function(it){lines.push('• '+it.name+' ×'+it.qty+' = '+fmt(it.qty*it.price));});
+lines.push(TOTALL+': '+fmt(p.total));
+if(p.name)lines.push(p.name+(p.phone?' · '+p.phone:''));
+if(p.address)lines.push(p.address);
+return lines.join('\n');
+}
+var lastPayload=null;
+document.getElementById('shform').addEventListener('submit',function(e){
+e.preventDefault();
+if(count()===0)return;
+var form=e.target,btn=document.getElementById('shsend');
+lastPayload=orderPayload(new FormData(form));
+btn.disabled=true;btn.textContent=SENDINGL;
+// Simple request on purpose: no headers → text/plain → no CORS preflight
+// (Apps Script cannot answer OPTIONS). redirect:'follow' because Apps
+// Script replies through a googleusercontent redirect.
+fetch(ENDPOINT,{method:'POST',body:JSON.stringify(lastPayload),redirect:'follow'})
+.then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json().catch(function(){return{ok:true};});})
+.then(function(){
+cart={};save();syncButtons();
+form.hidden=true;
+document.getElementById('shdone').hidden=false;
+})
+.catch(function(){
+form.hidden=true;
+var fail=document.getElementById('shfail');fail.hidden=false;
+var wa=document.getElementById('shwa');
+if(wa&&WAFALL)wa.href=WAFALL+'?text='+encodeURIComponent(orderText(lastPayload));
+})
+.finally(function(){btn.disabled=false;btn.textContent=SENDL;});
+});
+var retry=document.getElementById('shretry');
+if(retry)retry.addEventListener('click',function(){
+document.getElementById('shfail').hidden=true;
+document.getElementById('shform').hidden=false;
+});
+syncButtons();
+})();
+</script>
+</body>
+</html>
